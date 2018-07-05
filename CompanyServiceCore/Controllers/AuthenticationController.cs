@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CompanyService.Controllers
 {
     [Route("api/Authentication")]
-    [EnableCors("*")]
+    [EnableCors("AllowAllOrigins")]
     public class AuthenticationController : Controller
     {
 
