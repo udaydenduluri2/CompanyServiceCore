@@ -4,10 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+
 
 namespace CompanyService.Controllers
 {
     [Route("api/products")]
+    [EnableCors("MyPolicy")]
     public class ProductsController : Controller
     {
         [HttpGet]

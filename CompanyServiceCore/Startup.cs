@@ -24,25 +24,12 @@ namespace CompanyServiceCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddCors(options =>
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-
-                options.AddPolicy("AllowAllOrigins",
-                    builder =>
-                    {
-                        builder.AllowAnyOrigin();
-                    });
-
-                // BEGIN03
-                options.AddPolicy("AllowSpecificMethods",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://127.0.0.1:58973")
-                               .WithMethods("GET", "POST", "HEAD");
-                    });
-                // END03
-
-            });
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             public void Configure(IApplicationBuilder app, IHostingEnvironment env)

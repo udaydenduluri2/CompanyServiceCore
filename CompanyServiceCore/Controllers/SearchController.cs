@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using CompanyService.Models;
 
 namespace CompanyServiceCore.Controllers
@@ -13,6 +14,7 @@ namespace CompanyServiceCore.Controllers
     {
         [HttpGet]
         [Route("api/Search")]
+        [EnableCors("MyPolicy")]
         public IEnumerable<SearchResultDto> Index(string searchTerm)
         {
             var results = new List<SearchResultDto>
