@@ -18,7 +18,7 @@ namespace CompanyService.Controllers
         }
 
         [HttpPost]
-        [Route("api/Authentication/ValidateUser")]
+        [Route("ValidateUser")]
         public IActionResult ValidateUser([FromBody]Models.UserDto userDto)
         {
             if(userDto.UserName.Equals("uday.denduluri") && userDto.Password.Equals("password1"))
