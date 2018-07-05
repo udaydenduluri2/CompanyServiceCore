@@ -11,6 +11,12 @@ namespace CompanyService.Controllers
     public class AuthenticationController : Controller
     {
 
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
+
         [HttpPost]
         [Route("api/Authentication/ValidateUser")]
         public IActionResult ValidateUser([FromBody]Models.UserDto userDto)

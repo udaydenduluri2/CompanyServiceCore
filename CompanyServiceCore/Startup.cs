@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -37,12 +38,18 @@ namespace CompanyServiceCore
             {
                 options.AddPolicy("MyPolicy", corsBuilder.Build());
             });
+            var formatterSettings = JsonSerializerSettingsProvider.CreateSerializerSettings();
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.RemoveType<TextOutputFormatter>();
+                options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+                options.OutputFormatters.Add(new JsonOutputFormatter(formatterSettings, System.Buffers.ArrayPool<Char>.Create()));
+            });
 
             //services.Configure<MvcOptions>(options =>
             //{
             //    options.Filters.Add(new CorsAuthorizationFilterFactory("MyPolicy"));
             //});
-            services.AddMvcCore().AddJsonFormatters();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -60,6 +67,11 @@ namespace CompanyServiceCore
             app.UseCors("MyPolicy");
 
             app.UseMvc();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Authentication}/{action=Index}");
+            });
         }
     }
 }
