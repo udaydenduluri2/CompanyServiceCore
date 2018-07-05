@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
@@ -25,17 +26,16 @@ namespace CompanyServiceCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.AllowAnyOrigin(); // For anyone access.
+            //corsBuilder.WithOrigins("http://localhost:56573"); // for a specific url. Don't add a forward slash on the end!
+            corsBuilder.AllowCredentials();
+
             services.AddCors(options =>
             {
-                options.AddPolicy("MyPolicy",
-                    builder =>
-                    {
-                        builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                    });
+                options.AddPolicy("MyPolicy", corsBuilder.Build());
             });
 
             //services.Configure<MvcOptions>(options =>
@@ -51,6 +51,13 @@ namespace CompanyServiceCore
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMvc();
+
+            // ********************
+            // USE CORS - might not be required.
+            // ********************
+            app.UseCors("MyPolicy");
 
             app.UseMvc();
         }
