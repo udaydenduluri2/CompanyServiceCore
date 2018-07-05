@@ -33,6 +33,15 @@ namespace CompanyServiceCore
                         builder.AllowAnyOrigin();
                     });
 
+                // BEGIN03
+                options.AddPolicy("AllowSpecificMethods",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://127.0.0.1:58973")
+                               .WithMethods("GET", "POST", "HEAD");
+                    });
+                // END03
+
             });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
