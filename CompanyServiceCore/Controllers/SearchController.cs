@@ -32,6 +32,7 @@ namespace CompanyServiceCore.Controllers
 
         [HttpGet]
         [Route("api/Search/RelatedSearch")]
+        [EnableCors("MyPolicy")]
         public IEnumerable<SearchResultDto> RelatedSearch(string selectedItem)
         {
             var results = new List<SearchResultDto>
